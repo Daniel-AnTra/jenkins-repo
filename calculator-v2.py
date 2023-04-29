@@ -1,43 +1,47 @@
-class calculator:
-    def addition(self):
-        return (x + y)
-    def substraction(self):
-        return (x - y)
-    def multiplication(self):       
-        return (x * y)
-    def division(self):
-        if y != 0:
-            return (x / y) 
-        else:
-            print("You can't divide by 0")
-obj1 = calculator()
-choice = 1
-while choice != 0:
-        print ("1. Addition")
-        print ("2. Substraction")
-        print ("3. Multiplication")
-        print ("4. Division")
-        choice = int(input("Enter your choice of operation : "))
-        x = float(input("Enter the first number: ")) 
-        y = float(input("Enter the second number: "))
-        
-        if choice == 1:
-            print("The result is " + str(obj1.addition()))
-            yesno = str(input("Do you want new caluclation : press yes/no "))
-        elif choice == 2:
-            print("The result is " + str(obj1.substraction()))
-            yesno = str(input("Do you want new caluclation : press yes/no "))
-        elif choice == 3:
-            print("The result is " + str(obj1.multiplication()))
-            yesno = str(input("Do you want new caluclation : press yes/no "))
-        elif choice == 4:
-            print("The result is " + str(obj1.division()))   
-            yesno = str(input("Do you want new caluclation : press yes/no "))  
-        else:
-            print("Invalid choice. Choose one of the operations on the list")
-            yesno = str(input("Do you want new caluclation : press yes/no "))  
-            
-        if  yesno == "yes":
-            continue
-        elif yesno == "no":
-            break
+import argparse
+import random
+
+class Calculator:
+    def add(self, x, y):
+        return x + y
+    def subtract(self, x, y):
+        return x - y
+    def multiply(self, x, y):
+        return x * y
+    def divide(self, x, y):
+        if y == 0:
+            raise ValueError("Cannot divide by zero")
+        return x / y
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="A simple calculator")
+    parser.add_argument("operation", choices=["add", "subtract", "multiply", "divide"], help="operation to perform")
+    parser.add_argument("x", type=float, help="first operand")
+    parser.add_argument("y", type=float, help="second operand")
+    
+    args = parser.parse_args()
+    
+    calculator = Calculator()
+    
+    # Generate random values for operation and operands
+    operations = ["add", "subtract", "multiply", "divide"]
+    op = random.choice(operations)
+    x = random.randint(1, 10)
+    y = random.randint(1, 10)
+    
+    # Perform the selected operation
+    if op == "add":
+        result = calculator.add(x, y)
+    elif op == "subtract":
+        result = calculator.subtract(x, y)
+    elif op == "multiply":
+        result = calculator.multiply(x, y)
+    else:
+        try:
+            result = calculator.divide(x, y)
+        except ValueError as e:
+            print(e)
+            exit(1)
+    
+    # Print the result
+    print(f"{op}({x}, {y}) = {result}")
